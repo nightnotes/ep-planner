@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 const users = {
   nuno: "1234",
@@ -43,10 +40,22 @@ export default function EPPlannerApp() {
 
   if (!loggedInUser) {
     return (
-      <div className="max-w-sm mx-auto mt-20 space-y-4">
-        <Input placeholder="Gebruikersnaam" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <Input type="password" placeholder="Wachtwoord" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button onClick={handleLogin}>Inloggen</Button>
+      <div style={{ maxWidth: '400px', margin: '100px auto' }}>
+        <input
+          type="text"
+          placeholder="Gebruikersnaam"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ display: 'block', marginBottom: '10px', padding: '8px', width: '100%' }}
+        />
+        <input
+          type="password"
+          placeholder="Wachtwoord"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ display: 'block', marginBottom: '10px', padding: '8px', width: '100%' }}
+        />
+        <button onClick={handleLogin} style={{ padding: '10px 20px' }}>Inloggen</button>
       </div>
     );
   }
@@ -55,31 +64,27 @@ export default function EPPlannerApp() {
   const current = remainingEPs[0];
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-4">Welkom, {loggedInUser}</h1>
+    <div style={{ maxWidth: '500px', margin: '40px auto' }}>
+      <h1 style={{ fontSize: '24px', marginBottom: '20px' }}>Welkom, {loggedInUser}</h1>
       {current ? (
-        <Card>
-          <CardContent className="p-4 space-y-2">
-            <p><strong>Artiest:</strong> {current.artist}</p>
-            <p><strong>Deadline:</strong> {current.deadline}</p>
-            <Button onClick={() => handleDone(eps.indexOf(current))}>✅ Afgevinkt</Button>
-          </CardContent>
-        </Card>
+        <div style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '20px' }}>
+          <p><strong>Artiest:</strong> {current.artist}</p>
+          <p><strong>Deadline:</strong> {current.deadline}</p>
+          <button onClick={() => handleDone(eps.indexOf(current))} style={{ marginTop: '10px' }}>✅ Afgevinkt</button>
+        </div>
       ) : (
         <p>🎉 Alle EP's afgerond!</p>
       )}
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold mb-2">Overzicht</h2>
-        <ul className="space-y-1">
-          {eps
-            .filter((ep) => ep.owner === loggedInUser)
-            .map((ep, i) => (
-              <li key={i} className={ep.done ? "line-through text-gray-500" : ""}>
-                {ep.artist} – {ep.deadline}
-              </li>
-            ))}
-        </ul>
-      </div>
+      <h2 style={{ marginTop: '20px' }}>Overzicht:</h2>
+      <ul>
+        {eps
+          .filter((ep) => ep.owner === loggedInUser)
+          .map((ep, i) => (
+            <li key={i} style={{ textDecoration: ep.done ? 'line-through' : 'none', color: ep.done ? '#888' : '#000' }}>
+              {ep.artist} – {ep.deadline}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }
