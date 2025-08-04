@@ -1,90 +1,118 @@
-import { useState } from "react";
+
+import React, { useState } from 'react';
 
 const users = {
-  nuno: "1234",
-  martijn: "5678",
+  nuno: '123!',
+  martijn: '123!',
 };
 
-const initialEPs = [
-  { artist: "Artiest 1", deadline: "2025-08-04", owner: "nuno", done: false },
-  { artist: "Artiest 2", deadline: "2025-08-11", owner: "nuno", done: false },
-  { artist: "Artiest 3", deadline: "2025-08-18", owner: "nuno", done: false },
-  { artist: "Artiest 4", deadline: "2025-08-25", owner: "nuno", done: false },
-  { artist: "Artiest 5", deadline: "2025-09-01", owner: "nuno", done: false },
-  { artist: "Artiest 6", deadline: "2025-09-08", owner: "martijn", done: false },
-  { artist: "Artiest 7", deadline: "2025-09-15", owner: "martijn", done: false },
-  { artist: "Artiest 8", deadline: "2025-09-22", owner: "martijn", done: false },
-  { artist: "Artiest 9", deadline: "2025-09-29", owner: "martijn", done: false },
-  { artist: "Artiest 10", deadline: "2025-10-06", owner: "martijn", done: false },
+const calmSleepTasks = [
+  { artist: 'Muted Mind', date: '2025-08-12' },
+  { artist: 'Drowsy Daydreams', date: '2025-08-15' },
+  { artist: 'Cloud Notes', date: '2025-08-19' },
 ];
 
-export default function EPPlannerApp() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const adhdSleepTasks = [
+  { artist: 'Dreamflow', date: '2025-08-25', owner: 'nuno' },
+  { artist: 'Poluz', date: '2025-08-26', owner: 'martijn' },
+  { artist: 'Doris Lost', date: '2025-09-08', owner: 'nuno' },
+  { artist: 'Eternal', date: '2025-09-09', owner: 'martijn' },
+];
+
+const boosters = [
+  { quote: "Success usually comes to those who are too busy to be looking for it.", author: "Henry David Thoreau" },
+  { quote: "Don’t be afraid to give up the good to go for the great.", author: "John D. Rockefeller" },
+  { quote: "If you are not willing to risk the usual, you will have to settle for the ordinary.", author: "Jim Rohn" },
+  { quote: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+];
+
+export default function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const [eps, setEps] = useState(initialEPs);
+  const [completed, setCompleted] = useState([]);
+  const [boosterIndex, setBoosterIndex] = useState(0);
 
   const handleLogin = () => {
     if (users[username.toLowerCase()] === password) {
       setLoggedInUser(username.toLowerCase());
     } else {
-      alert("Verkeerde gebruikersnaam of wachtwoord");
+      alert('Incorrect username or password');
     }
   };
 
-  const handleDone = (index) => {
-    const updated = [...eps];
-    updated[index].done = true;
-    setEps(updated);
+  const handleLogout = () => {
+    setLoggedInUser(null);
+    setUsername('');
+    setPassword('');
+  };
+
+  const toggleTask = (artist) => {
+    setCompleted((prev) =>
+      prev.includes(artist) ? prev.filter((a) => a !== artist) : [...prev, artist]
+    );
+  };
+
+  const showNextBooster = () => {
+    setBoosterIndex((prev) => (prev + 1) % boosters.length);
   };
 
   if (!loggedInUser) {
     return (
-      <div style={{ maxWidth: '400px', margin: '100px auto' }}>
-        <input
-          type="text"
-          placeholder="Gebruikersnaam"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ display: 'block', marginBottom: '10px', padding: '8px', width: '100%' }}
-        />
-        <input
-          type="password"
-          placeholder="Wachtwoord"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ display: 'block', marginBottom: '10px', padding: '8px', width: '100%' }}
-        />
-        <button onClick={handleLogin} style={{ padding: '10px 20px' }}>Inloggen</button>
+      <div style={{ padding: 30, textAlign: 'center' }}>
+        <h1>Night Notes EP-Planner</h1>
+        <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} /><br /><br />
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br />
+        <button onClick={handleLogin}>Login</button>
       </div>
     );
   }
 
-  const remainingEPs = eps.filter((ep) => ep.owner === loggedInUser && !ep.done);
-  const current = remainingEPs[0];
+  const userADHDTaks = adhdSleepTasks.filter((t) => t.owner === loggedInUser);
 
   return (
-    <div style={{ maxWidth: '500px', margin: '40px auto' }}>
-      <h1 style={{ fontSize: '24px', marginBottom: '20px' }}>Welkom, {loggedInUser}</h1>
-      {current ? (
-        <div style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '20px' }}>
-          <p><strong>Artiest:</strong> {current.artist}</p>
-          <p><strong>Deadline:</strong> {current.deadline}</p>
-          <button onClick={() => handleDone(eps.indexOf(current))} style={{ marginTop: '10px' }}>✅ Afgevinkt</button>
-        </div>
-      ) : (
-        <p>🎉 Alle EP's afgerond!</p>
-      )}
-      <h2 style={{ marginTop: '20px' }}>Overzicht:</h2>
+    <div style={{ padding: 20 }}>
+      <h2>Welcome, {loggedInUser.charAt(0).toUpperCase() + loggedInUser.slice(1)}</h2>
+      <button onClick={handleLogout}>Logout</button>
+
+      <h3>Calm & Sleep Releases</h3>
       <ul>
-        {eps
-          .filter((ep) => ep.owner === loggedInUser)
-          .map((ep, i) => (
-            <li key={i} style={{ textDecoration: ep.done ? 'line-through' : 'none', color: ep.done ? '#888' : '#000' }}>
-              {ep.artist} – {ep.deadline}
-            </li>
-          ))}
+        {calmSleepTasks.map(({ artist, date }) => (
+          <li key={artist}>
+            <label>
+              <input
+                type="checkbox"
+                checked={completed.includes(artist)}
+                onChange={() => toggleTask(artist)}
+              />
+              {artist} – {date}
+            </label>
+          </li>
+        ))}
       </ul>
+
+      <h3>ADHD Sleep Releases</h3>
+      <ul>
+        {userADHDTaks.map(({ artist, date }) => (
+          <li key={artist}>
+            <label>
+              <input
+                type="checkbox"
+                checked={completed.includes(artist)}
+                onChange={() => toggleTask(artist)}
+              />
+              {artist} – {date}
+            </label>
+          </li>
+        ))}
+      </ul>
+
+      <h3>💡 Business Booster</h3>
+      <blockquote>
+        <em>"{boosters[boosterIndex].quote}"</em><br />
+        — {boosters[boosterIndex].author}
+      </blockquote>
+      <button onClick={showNextBooster}>Next quote</button>
     </div>
   );
 }
