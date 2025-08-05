@@ -1,4 +1,4 @@
-const users = { "Nuneaux": "Nunonightnotes123!", "Erry": "Martijnnightnotes123!" };
+const users = { "Nuno": "123!", "martijn": "123!" };
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const username = document.getElementById('username').value.trim();
