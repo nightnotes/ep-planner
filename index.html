@@ -10,10 +10,12 @@
     <div class="login-container">
         <div class="login-card">
             <div class="logo">
+                <!-- Gebruik het Night Notes logo -->
                 <img src="Logo nightnotes.png" alt="Night Notes logo">
             </div>
             <h1>Welkom CEO</h1>
-            <form id="login-form">
+            <!-- Formulier stuurt direct naar home.html voor fallback -->
+            <form id="login-form" action="home.html">
                 <label for="username">Gebruikersnaam</label>
                 <input type="text" id="username" name="username" placeholder="Voer je gebruikersnaam in" required>
                 <label for="password">Wachtwoord</label>
@@ -23,6 +25,7 @@
             <p class="error-message" id="error-message"></p>
         </div>
     </div>
-    <script src="script.js"></script>
+    <!-- Script met deferred loading -->
+    <script src="script.js" defer></script>
 </body>
 </html>
