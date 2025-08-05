@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Night Notes EP-Planner</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen - Night Notes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <img src="Logo nightnotes.png" alt="Night Notes logo">
+            </div>
+            <h1>Inloggen tot Night Notes</h1>
+            <form id="login-form">
+                <label for="username">Gebruikersnaam</label>
+                <input type="text" id="username" name="username" placeholder="Voer je gebruikersnaam in" required>
+
+                <label for="password">Wachtwoord</label>
+                <input type="password" id="password" name="password" placeholder="Voer je wachtwoord in" required>
+
+                <button type="submit" id="login-button">Ga verder</button>
+            </form>
+            <p class="error-message" id="error-message"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
